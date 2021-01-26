@@ -1,0 +1,87 @@
+﻿@using Practice.Models;
+@{
+    ViewBag.Title = "Home Page";
+
+    // Angular Properties
+    //var id = Request.QueryString["id"];//ViewContext.RouteData.Values["id"];
+    //var CountryId = (string)id == null ? "0" : (string)id;
+
+    //WebApi link for single row
+    var getProductByIdUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "ProductInfo" });
+    var deleteProductByIdUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "DeleteProductById", area = "Admin" });
+
+    ////WebApi link for List
+    var getAllProductUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "GetProductsList" });
+   
+    //Angular Function Name
+    var deleteProductById = "deleteProduct";
+    var deleteModal = "deleteModal";
+    var search = "search";
+
+}
+<div class="panel panel-primary">
+    <div class="panel-heading"><h1>Product's List</h1></div>
+    <div class="panel-body">
+        <div ng-controller="productListCtrl" ng-init="Init(
+      '@getProductByIdUrl',
+      '@deleteProductByIdUrl',
+      '@getAllProductUrl'
+     )">
+            <br />
+            <a href="@(getProductByIdUrl)&id=0" class="btn btn-success pull-right" ><i class="fa fa-pencil-square-o">Create New Product</i></a>
+            <input placeholder="Search" ng-model="value" ng-keyup="@(search)()" />
+            <br /><br />
+            <div class="table-bordered">
+                <div class="table-striped">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td>ProductId</td>
+                                    <td>Product Name</td>
+                                    <td>Quantity</td>
+                                    <td>Price(per item)</td>
+                                    <td>Last Updated By</td>
+                                    <td>Add Date</td>
+                                    <td>Updated Date</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody id="products">
+                                <tr ng-repeat="x in products">
+                                    <td>{{x.@ProductColumn.productId}}</td>
+                                    <td>{{x.@ProductColumn.productName}}</td>
+                                    <td>{{x.@ProductColumn.quantity}}</td>
+                                    <td>{{x.@ProductColumn.price}}</td>
+                                    <td>{{x.@ProductColumn.userName}}</td>
+                                    <td ng-bind="convertToDate(x.@ProductColumn.createdDate) | date:'dd/MM/yyyy'"></td>
+                                    <td ng-bind="convertToDate(x.@ProductColumn.updatedDate) | date:'dd/MM/yyyy'"></td>
+                                    <td><a href="@(getProductByIdUrl)&id={{x.@ProductColumn.productId}}" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i></a> | <button class="btn btn-danger" ng-click="@(deleteModal)(x)"><i class="fa fa-trash-o"></i></button> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this product?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button ng-click="@(deleteProductById)()" class="btn btn-danger">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/Scripts/Product2.js"></script>

@@ -1,0 +1,54 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="~/Content/mystyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/login.js"></script>
+    <script type="text/javascript" src="~/Scripts/Cookie.js"></script>
+    <title>Login</title>
+</head>
+<body ng-app="myApp" ng-controller="userCtrl">
+    <div>
+        <div class="header-index">
+            <a class="btn"><b class="text-white name">Practice Project with Angular</b></a>
+        </div>
+
+        <div class="center-login">
+            <h1 class="text text-center">Login</h1>
+            <div class="form-group">
+                <h4 class="text" style="color: red;"></h4>
+            </div>
+            <div class="form-group">
+                <h4 class="text">Username</h4>
+                <input type="text" name="username" class="form-control" ng-model="username" required>
+            </div>
+            <div class="form-group">
+                <h4 class="text">Password</h4>
+                <input type="password" name="password" class="form-control" ng-model="password" required>
+            </div>
+            <div class="form-group">
+                <p ng-bind="errmsg" style="color:{{c}}"></p>
+                <p style="color:red">@TempData["errmsg"]</p>
+            </div>
+            <div class="form-group text-center">
+
+                <input ng-click="login()" type="submit" name="login" class="btn btn-danger" value="Login">
+            </div>
+        </div>
+
+        <!--footer-->
+        <footer class="footer">
+            <h4>Practicing With One Entity</h4>
+        </footer>
+    </div>
+</body>
+</html>

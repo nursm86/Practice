@@ -1,0 +1,179 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div id="products" class="panel panel-primary">
+    <div class="panel-heading"><h1>Product's List</h1></div>
+    <div class="panel-body">
+        <div ng-controller="productListCtrl">
+            <br />
+            <button type="button" class="btn btn-success pull-right" ng-click="openModal()"><i class="fa fa-pencil-square-o">Create New Product</i></button>
+            <input placeholder="Search" ng-model="value" ng-keyup="search()" />
+            <br /><br />
+            <div class="table-bordered">
+                <div class="table-striped">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td>ProductId</td>
+                                    <td>Product Name</td>
+                                    <td>Quantity</td>
+                                    <td>Price(per item)</td>
+                                    <td>Last Updated By</td>
+                                    <td>Add Date</td>
+                                    <td>Updated Date</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody id="products">
+                                <tr ng-repeat="x in products">
+                                    <td>{{x.productId}}</td>
+                                    <td>{{x.productName}}</td>
+                                    <td>{{x.quantity}}</td>
+                                    <td>{{x.price}}</td>
+                                    <td>{{x.user.userName}}</td>
+                                    <td ng-bind="convertToDate(x.createdDate) | date:'dd/MM/yyyy'"></td>
+                                    <td ng-bind="convertToDate(x.updatedDate) | date:'dd/MM/yyyy'"></td>
+                                    <td><button type="button" class="btn btn-primary" ng-click="editModal(x)"><i class="fa fa-pencil-square-o"></i></button> | <button class="btn btn-danger" ng-click="deleteModal(x)"><i class="fa fa-trash-o"></i></button> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="editmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">{{msg}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Product Name</label>
+                                <input type="text" class="form-control" ng-model="data.productName">
+                            </div>
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="number" class="form-control" ng-model="data.quantity">
+                            </div>
+                            <div class="form-group">
+                                <label>Price</label>
+                                <input type="number" class="form-control" ng-model="data.price">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button ng-click="addOrUpdate()" class="btn btn-{{button}}">{{show}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this product?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button ng-click="deleteProduct()" class="btn btn-danger">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="users" class="panel panel-primary">
+    <div class="panel-heading"><h1>User's List</h1></div>
+    <div class="panel-body">
+        <div ng-controller="userListCtrl">
+            <br />
+            <div class="col-md-6">
+                <button type="button" class="btn btn-success pull-right" ng-click="addNewUser()"><i class="fa fa-pencil-square-o">Add New User</i></button>
+                <input placeholder="Search" ng-model="value" ng-keyup="search()" />
+                <br /><br />
+                <div class="table-bordered">
+                    <div class="table-striped">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>UserId</td>
+                                        <td>User Name</td>
+                                        <td>Added Date</td>
+                                        <td>Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="users">
+                                    <tr ng-repeat="x in users">
+                                        <td>{{x.userId}}</td>
+                                        <td>{{x.userName}}</td>
+                                        <td ng-bind="convertToDate(x.updatedDate) | date:'dd/MM/yyyy'"></td>
+                                        <td><button type="button" class="btn btn-primary" ng-click="editModal(x)"><i class="fa fa-pencil-square-o"></i></button> | <button class="btn btn-danger" ng-click="deleteModal(x)"><i class="fa fa-trash-o"></i></button> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-{{button}}">
+                    <div class="panel-heading"><h5>{{show}}</h5></div>
+                    <div class="panel-body">
+                        <div class="container">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="userName">UserName:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="userName" placeholder="Enter User Name" ng-model="data.userName">
+                                </div>
+                            </div>
+                            <br /><br />
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="pwd">Password:</label>
+                                <div class="col-sm-10">
+                                    <input type="password" id="pwd" class="form-control" placeholder="Enter password" ng-model="data.password">
+                                </div>
+                            </div>
+                            <br /><br />
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button class="btn btn-{{button}}" ng-click="addOrUpdate()">{{show}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this product?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button ng-click="deleteUser()" class="btn btn-danger">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Scripts/Product.js"></script>
+<script type="text/javascript" src="~/Scripts/User.js"></script>
