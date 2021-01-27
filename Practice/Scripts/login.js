@@ -22,7 +22,7 @@ app.controller('userCtrl', function ($scope, $http) {
                         Cookies.set("uname", $scope.username);
                         Cookies.set("pass", $scope.password);
                         Cookies.set("id", response.data);
-                        window.location.href = '/product';
+                        window.location.href = '/product/ProductList';
                     }
                 }
             });

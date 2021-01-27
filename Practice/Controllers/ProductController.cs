@@ -12,7 +12,7 @@ namespace Practice.Controllers
     public class ProductController : Controller
     {
         ProductRepository proRepo = new ProductRepository();
-        public ActionResult Index()
+        public ActionResult ProductList()
         {
             if (Session["uname"] == null)
             {
@@ -22,7 +22,7 @@ namespace Practice.Controllers
             return View();
         }
 
-        public ActionResult ProductInfo()
+        public ActionResult ProductAddEdit()
         {
             if (Session["uname"] == null)
             {
@@ -31,65 +31,64 @@ namespace Practice.Controllers
             }
             return View();
         }
+
+        //******************************Web Api from here************************
+
         [HttpPost]
+        public JsonResult GetAllCategory()
+        {
+            return Json(JsonConvert.SerializeObject(proRepo.GetAllCategories()));
+        }
 
-        public JsonResult GetProductInfoById(int id)
+        [HttpGet]
+
+        public JsonResult GetAllProduct()
+        {
+            string json = JsonConvert.SerializeObject(proRepo.GetAll());
+            return Json(json,JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetProductById(int id)
         {
             return Json(JsonConvert.SerializeObject(proRepo.Get(id)));
         }
         [HttpPost]
 
-        public JsonResult DeleteProductById(int id)
+        public JsonResult GetDeleteProductById(int id)
         {
             proRepo.Delete(id);
             return Json(true);
         }
 
         [HttpPost]
-        public JsonResult CreateNewProduct(product p)
+        public JsonResult SaveProduct(product p)
         {
-            p.createdDate = DateTime.Now;
             p.updatedDate = DateTime.Now;
-            if (ModelState.IsValid)
+            if (p.productId == 0)
             {
-                return Json(JsonConvert.SerializeObject(proRepo.InsertProduct(p)));
+                p.createdDate = DateTime.Now;
+                if (ModelState.IsValid)
+                {
+                    return Json(JsonConvert.SerializeObject(proRepo.InsertProduct(p)));
+                }
+                else
+                {
+                    return Json(false);
+                }
             }
             else
             {
-                return Json(false);
+                if (ModelState.IsValid)
+                {
+                    return Json(JsonConvert.SerializeObject(proRepo.UpdateProduct(p)));
+                }
+                else
+                {
+                    return Json(false);
+                }
             }
 
-        }
-        [HttpPost]
-        public JsonResult UpdateProduct(product p)
-        {
-            p.updatedDate = DateTime.Now;
-            if (ModelState.IsValid)
-            {
-                return Json(JsonConvert.SerializeObject(proRepo.UpdateProduct(p)));
-            }
-            else
-            {
-                return Json(false);
-            }
-        }
-
-        [HttpPost]
-
-        public JsonResult GetProductsList(int totalShow, int pageNo)
-        {
-            string json = JsonConvert.SerializeObject(proRepo.GetAll());
-            return Json(json);
-        }
-
-        public ActionResult CreateNewProduct()
-        {
-            if (Session["uname"] == null)
-            {
-                TempData["errmsg"] = "Please Login first!!!";
-                return RedirectToAction("", "Login");
-            }
-            return View();
         }
     }
 }

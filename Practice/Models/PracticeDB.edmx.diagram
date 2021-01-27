@@ -8,6 +8,8 @@
         <EntityTypeShape EntityType="PracticeDBModel.product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="PracticeDBModel.user" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
         <AssociationConnector Association="PracticeDBModel.FK_products_users" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PracticeDBModel.Category" Width="1.5" PointX="0.75" PointY="5.75" />
+        <AssociationConnector Association="PracticeDBModel.FK_products_categories" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

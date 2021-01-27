@@ -14,6 +14,8 @@ namespace Practice.Repositories
             up.productName = p.productName;
             up.quantity = p.quantity;
             up.price = p.price;
+            up.isEnable = p.isEnable;
+            up.categoryId = p.categoryId;
             up.userId = p.userId;
             up.updatedDate = DateTime.Now;
             this.context.SaveChanges();
@@ -22,6 +24,10 @@ namespace Practice.Repositories
             return up;
         }
 
+        public List<Category> GetAllCategories()
+        {
+            return this.context.Set<Category>().ToList();
+        }
         public product InsertProduct(product p)
         {
             UserRepository ur = new UserRepository();

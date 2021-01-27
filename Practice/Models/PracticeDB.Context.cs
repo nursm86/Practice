@@ -27,5 +27,6 @@ namespace Practice.Models
     
         public virtual DbSet<product> products { get; set; }
         public virtual DbSet<user> users { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
     }
 }

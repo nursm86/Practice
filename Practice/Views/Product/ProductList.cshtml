@@ -7,11 +7,11 @@
     //var CountryId = (string)id == null ? "0" : (string)id;
 
     //WebApi link for single row
-    var getProductByIdUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "ProductInfo" });
-    var deleteProductByIdUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "DeleteProductById", area = "Admin" });
+    var getProductByIdUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "ProductAddEdit" });
+    var deleteProductByIdUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "GetDeleteProductById", area = "Admin" });
 
     ////WebApi link for List
-    var getAllProductUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "GetProductsList" });
+    var getAllProductUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "GetAllProduct" });
    
     //Angular Function Name
     var deleteProductById = "deleteProduct";
@@ -41,9 +41,11 @@
                                     <td>Product Name</td>
                                     <td>Quantity</td>
                                     <td>Price(per item)</td>
+                                    <td>Category</td>
                                     <td>Last Updated By</td>
                                     <td>Add Date</td>
                                     <td>Updated Date</td>
+                                    <td>State</td>
                                     <td>Action</td>
                                 </tr>
                             </thead>
@@ -53,9 +55,11 @@
                                     <td>{{x.@ProductColumn.productName}}</td>
                                     <td>{{x.@ProductColumn.quantity}}</td>
                                     <td>{{x.@ProductColumn.price}}</td>
+                                    <td>{{x.@ProductColumn.category}}</td>
                                     <td>{{x.@ProductColumn.userName}}</td>
                                     <td ng-bind="convertToDate(x.@ProductColumn.createdDate) | date:'dd/MM/yyyy'"></td>
                                     <td ng-bind="convertToDate(x.@ProductColumn.updatedDate) | date:'dd/MM/yyyy'"></td>
+                                    <td><label style="color:green" ng-show="{{x.@ProductColumn.isEnable}}">Enable</label><label style="color:red" ng-hide="{{x.@ProductColumn.isEnable}}">Disable</label></td>
                                     <td><a href="@(getProductByIdUrl)&id={{x.@ProductColumn.productId}}" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i></a> | <button class="btn btn-danger" ng-click="@(deleteModal)(x)"><i class="fa fa-trash-o"></i></button> </td>
                                 </tr>
                             </tbody>
@@ -84,4 +88,4 @@
     </div>
 </div>
 
-<script type="text/javascript" src="~/Scripts/Product2.js"></script>
+<script type="text/javascript" src="~/Scripts/ProductList.js"></script>

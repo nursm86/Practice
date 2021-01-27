@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PracticeDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="products">
           <Key>
             <PropertyRef Name="productId" />
@@ -16,6 +23,8 @@
           <Property Name="price" Type="float" Nullable="false" />
           <Property Name="createdDate" Type="date" Nullable="false" />
           <Property Name="updatedDate" Type="date" Nullable="false" />
+          <Property Name="categoryId" Type="int" Nullable="false" />
+          <Property Name="isEnable" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -26,6 +35,18 @@
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="updatedDate" Type="date" Nullable="false" />
         </EntityType>
+        <Association Name="FK_products_categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="products" Type="Self.products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="categoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_products_users">
           <End Role="users" Type="Self.users" Multiplicity="1" />
           <End Role="products" Type="Self.products" Multiplicity="*" />
@@ -39,8 +60,13 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="PracticeDBModelStoreContainer">
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="products" EntityType="Self.products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_products_categories" Association="Self.FK_products_categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
           <AssociationSet Name="FK_products_users" Association="Self.FK_products_users">
             <End Role="users" EntitySet="users" />
             <End Role="products" EntitySet="products" />
@@ -62,6 +88,9 @@
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="updatedDate" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="user" Relationship="Self.FK_products_users" FromRole="products" ToRole="users" />
+          <Property Name="categoryId" Type="Int32" Nullable="false" />
+          <Property Name="isEnable" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="PracticeDBModel.FK_products_categories" FromRole="product" ToRole="Category" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -92,7 +121,32 @@
             <End Role="users" EntitySet="users" />
             <End Role="products" EntitySet="products" />
           </AssociationSet>
+          <EntitySet Name="Categories" EntityType="PracticeDBModel.Category" />
+          <AssociationSet Name="FK_products_categories" Association="PracticeDBModel.FK_products_categories">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="product" EntitySet="products" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="products" Relationship="PracticeDBModel.FK_products_categories" FromRole="Category" ToRole="product" />
+        </EntityType>
+        <Association Name="FK_products_categories">
+          <End Type="PracticeDBModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="PracticeDBModel.product" Role="product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="categoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -102,6 +156,8 @@
           <EntitySetMapping Name="products">
             <EntityTypeMapping TypeName="PracticeDBModel.product">
               <MappingFragment StoreEntitySet="products">
+                <ScalarProperty Name="isEnable" ColumnName="isEnable" />
+                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
                 <ScalarProperty Name="productId" ColumnName="productId" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
                 <ScalarProperty Name="productName" ColumnName="productName" />
@@ -119,6 +175,14 @@
                 <ScalarProperty Name="userName" ColumnName="userName" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="updatedDate" ColumnName="updatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="PracticeDBModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

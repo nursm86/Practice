@@ -4,6 +4,8 @@
     <EntitySetMapping Name="products">
       <EntityTypeMapping TypeName="PracticeDBModel.product">
         <MappingFragment StoreEntitySet="products">
+          <ScalarProperty Name="isEnable" ColumnName="isEnable" />
+          <ScalarProperty Name="categoryId" ColumnName="categoryId" />
           <ScalarProperty Name="productId" ColumnName="productId" />
           <ScalarProperty Name="userId" ColumnName="userId" />
           <ScalarProperty Name="productName" ColumnName="productName" />
@@ -21,6 +23,14 @@
           <ScalarProperty Name="userName" ColumnName="userName" />
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="updatedDate" ColumnName="updatedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="PracticeDBModel.Category">
+        <MappingFragment StoreEntitySet="Categories">
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

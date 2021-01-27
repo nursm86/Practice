@@ -136,6 +136,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Category.cs">
+      <DependentUpon>PracticeDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PracticeDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -209,8 +212,8 @@
     <Content Include="Scripts\login.js" />
     <Content Include="Scripts\PageLoad.js" />
     <Content Include="Scripts\Product.js" />
-    <Content Include="Scripts\Product2.js" />
-    <Content Include="Scripts\ProductInfo.js" />
+    <Content Include="Scripts\ProductList.js" />
+    <Content Include="Scripts\ProductAddEdit.js" />
     <Content Include="Scripts\User.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -229,8 +232,8 @@
     <Content Include="Views\Home\Products.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
-    <Content Include="Views\Product\Index.cshtml" />
-    <Content Include="Views\Product\ProductInfo.cshtml" />
+    <Content Include="Views\Product\ProductList.cshtml" />
+    <Content Include="Views\Product\ProductAddEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

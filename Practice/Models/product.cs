@@ -11,20 +11,20 @@ namespace Practice.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-
+    
     public partial class product
     {
         public int productId { get; set; }
         public int userId { get; set; }
-        [DisplayName("Product Name")]
         public string productName { get; set; }
-        [DisplayName("Quantity")]
         public int quantity { get; set; }
-        [DisplayName("Price")]
         public double price { get; set; }
         public System.DateTime createdDate { get; set; }
         public System.DateTime updatedDate { get; set; }
+        public int categoryId { get; set; }
+        public bool isEnable { get; set; }
+    
         public virtual user user { get; set; }
+        public virtual Category Category { get; set; }
     }
 }

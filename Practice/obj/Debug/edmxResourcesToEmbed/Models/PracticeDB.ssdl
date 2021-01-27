@@ -1,5 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="PracticeDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
   <EntityType Name="products">
     <Key>
       <PropertyRef Name="productId" />
@@ -11,6 +18,8 @@
     <Property Name="price" Type="float" Nullable="false" />
     <Property Name="createdDate" Type="date" Nullable="false" />
     <Property Name="updatedDate" Type="date" Nullable="false" />
+    <Property Name="categoryId" Type="int" Nullable="false" />
+    <Property Name="isEnable" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="users">
     <Key>
@@ -21,6 +30,18 @@
     <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="updatedDate" Type="date" Nullable="false" />
   </EntityType>
+  <Association Name="FK_products_categories">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="products" Type="Self.products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="products">
+        <PropertyRef Name="categoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_products_users">
     <End Role="users" Type="Self.users" Multiplicity="1" />
     <End Role="products" Type="Self.products" Multiplicity="*" />
@@ -34,8 +55,13 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="PracticeDBModelStoreContainer">
+    <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="products" EntityType="Self.products" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_products_categories" Association="Self.FK_products_categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="products" EntitySet="products" />
+    </AssociationSet>
     <AssociationSet Name="FK_products_users" Association="Self.FK_products_users">
       <End Role="users" EntitySet="users" />
       <End Role="products" EntitySet="products" />

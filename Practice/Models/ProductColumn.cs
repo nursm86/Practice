@@ -14,6 +14,8 @@ namespace Practice.Models
         public const string userName = "user.userName";
         public const string createdDate = "createdDate";
         public const string updatedDate = "updatedDate";
+        public const string category = "Category.CategoryName";
+        public const string isEnable = "isEnable";
 
     }
 }
