@@ -1,20 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="PracticeDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="products" Relationship="Self.FK_products_categories" FromRole="Categories" ToRole="products" />
+    <NavigationProperty Name="products1" Relationship="Self.FK_products_categories2" FromRole="Categories" ToRole="products" />
+  </EntityType>
+  <EntityType Name="Dealer">
+    <Key>
+      <PropertyRef Name="DealerId" />
+    </Key>
+    <Property Name="DealerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DealerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="products" Relationship="Self.FK_products_dealers" FromRole="Dealers" ToRole="products" />
+  </EntityType>
   <EntityType Name="product">
     <Key>
       <PropertyRef Name="productId" />
     </Key>
-    <Property Name="productId" Type="Int32" Nullable="false" />
+    <Property Name="productId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="userId" Type="Int32" Nullable="false" />
     <Property Name="productName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="quantity" Type="Int32" Nullable="false" />
     <Property Name="price" Type="Double" Nullable="false" />
     <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="updatedDate" Type="DateTime" Nullable="false" Precision="0" />
-    <NavigationProperty Name="user" Relationship="Self.FK_products_users" FromRole="products" ToRole="users" />
-    <Property Name="categoryId" Type="Int32" Nullable="false" />
+    <Property Name="category1Id" Type="Int32" Nullable="false" />
     <Property Name="isEnable" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="Category" Relationship="PracticeDBModel.FK_products_categories" FromRole="product" ToRole="Category" />
+    <Property Name="category2Id" Type="Int32" Nullable="false" />
+    <Property Name="dealerId" Type="Int32" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_products_categories" FromRole="products" ToRole="Categories" />
+    <NavigationProperty Name="Category1" Relationship="Self.FK_products_categories2" FromRole="products" ToRole="Categories" />
+    <NavigationProperty Name="Dealer" Relationship="Self.FK_products_dealers" FromRole="products" ToRole="Dealers" />
+    <NavigationProperty Name="user" Relationship="Self.FK_products_users" FromRole="products" ToRole="users" />
   </EntityType>
   <EntityType Name="user">
     <Key>
@@ -26,6 +47,42 @@
     <Property Name="updatedDate" Type="DateTime" Nullable="false" Precision="0" />
     <NavigationProperty Name="products" Relationship="Self.FK_products_users" FromRole="users" ToRole="products" />
   </EntityType>
+  <Association Name="FK_products_categories">
+    <End Role="Categories" Type="Self.Category" Multiplicity="1" />
+    <End Role="products" Type="Self.product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="products">
+        <PropertyRef Name="category1Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_products_categories2">
+    <End Role="Categories" Type="Self.Category" Multiplicity="1" />
+    <End Role="products" Type="Self.product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="products">
+        <PropertyRef Name="category2Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_products_dealers">
+    <End Role="Dealers" Type="Self.Dealer" Multiplicity="0..1" />
+    <End Role="products" Type="Self.product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Dealers">
+        <PropertyRef Name="DealerId" />
+      </Principal>
+      <Dependent Role="products">
+        <PropertyRef Name="dealerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_products_users">
     <End Role="users" Type="Self.user" Multiplicity="1" />
     <End Role="products" Type="Self.product" Multiplicity="*" />
@@ -38,37 +95,26 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="PracticeDBEntities" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="PracticeDBEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Dealers" EntityType="Self.Dealer" />
     <EntitySet Name="products" EntityType="Self.product" />
     <EntitySet Name="users" EntityType="Self.user" />
+    <AssociationSet Name="FK_products_categories" Association="Self.FK_products_categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="products" EntitySet="products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_products_categories2" Association="Self.FK_products_categories2">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="products" EntitySet="products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_products_dealers" Association="Self.FK_products_dealers">
+      <End Role="Dealers" EntitySet="Dealers" />
+      <End Role="products" EntitySet="products" />
+    </AssociationSet>
     <AssociationSet Name="FK_products_users" Association="Self.FK_products_users">
       <End Role="users" EntitySet="users" />
       <End Role="products" EntitySet="products" />
     </AssociationSet>
-    <EntitySet Name="Categories" EntityType="PracticeDBModel.Category" />
-    <AssociationSet Name="FK_products_categories" Association="PracticeDBModel.FK_products_categories">
-      <End Role="Category" EntitySet="Categories" />
-      <End Role="product" EntitySet="products" />
-    </AssociationSet>
   </EntityContainer>
-  <EntityType Name="Category">
-    <Key>
-      <PropertyRef Name="CategoryId" />
-    </Key>
-    <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="products" Relationship="PracticeDBModel.FK_products_categories" FromRole="Category" ToRole="product" />
-  </EntityType>
-  <Association Name="FK_products_categories">
-    <End Type="PracticeDBModel.Category" Role="Category" Multiplicity="1" />
-    <End Type="PracticeDBModel.product" Role="product" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Category">
-        <PropertyRef Name="CategoryId" />
-      </Principal>
-      <Dependent Role="product">
-        <PropertyRef Name="categoryId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

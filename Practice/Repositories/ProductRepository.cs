@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
 
 namespace Practice.Repositories
 {
@@ -15,7 +16,9 @@ namespace Practice.Repositories
             up.quantity = p.quantity;
             up.price = p.price;
             up.isEnable = p.isEnable;
-            up.categoryId = p.categoryId;
+            up.category1Id = p.category1Id;
+            up.category2Id = p.category2Id;
+            up.dealerId = p.dealerId;
             up.userId = p.userId;
             up.updatedDate = DateTime.Now;
             this.context.SaveChanges();
@@ -27,6 +30,11 @@ namespace Practice.Repositories
         public List<Category> GetAllCategories()
         {
             return this.context.Set<Category>().ToList();
+        }
+
+        public List<Dealer> GetAllDealers()
+        {
+            return this.context.Set<Dealer>().ToList();
         }
         public product InsertProduct(product p)
         {

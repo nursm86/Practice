@@ -4,12 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a2370d90de344efa80a3827f2f2d2dca" Name="Diagram1">
-        <EntityTypeShape EntityType="PracticeDBModel.product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="PracticeDBModel.user" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+      <Diagram DiagramId="c424259282ea431cadf7e1d8b570f831" Name="Diagram1">
+        <EntityTypeShape EntityType="PracticeDBModel.Category" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PracticeDBModel.Dealer" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PracticeDBModel.product" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PracticeDBModel.user" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="PracticeDBModel.FK_products_categories" ManuallyRouted="false" />
+        <AssociationConnector Association="PracticeDBModel.FK_products_categories2" ManuallyRouted="false" />
+        <AssociationConnector Association="PracticeDBModel.FK_products_dealers" ManuallyRouted="false" />
         <AssociationConnector Association="PracticeDBModel.FK_products_users" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="PracticeDBModel.Category" Width="1.5" PointX="0.75" PointY="5.75" />
-        <AssociationConnector Association="PracticeDBModel.FK_products_categories" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

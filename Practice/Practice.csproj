@@ -139,6 +139,9 @@
     <Compile Include="Models\Category.cs">
       <DependentUpon>PracticeDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Dealer.cs">
+      <DependentUpon>PracticeDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PracticeDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

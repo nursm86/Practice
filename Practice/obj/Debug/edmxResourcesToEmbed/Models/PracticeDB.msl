@@ -1,11 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="PracticeDBModelStoreContainer" CdmEntityContainer="PracticeDBEntities">
+  <EntityContainerMapping StorageEntityContainer="PracticeDBModelStoreContainer" CdmEntityContainer="PracticeDBEntities1">
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="PracticeDBModel.Category">
+        <MappingFragment StoreEntitySet="Categories">
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Dealers">
+      <EntityTypeMapping TypeName="PracticeDBModel.Dealer">
+        <MappingFragment StoreEntitySet="Dealers">
+          <ScalarProperty Name="DealerId" ColumnName="DealerId" />
+          <ScalarProperty Name="DealerName" ColumnName="DealerName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="products">
       <EntityTypeMapping TypeName="PracticeDBModel.product">
         <MappingFragment StoreEntitySet="products">
-          <ScalarProperty Name="isEnable" ColumnName="isEnable" />
-          <ScalarProperty Name="categoryId" ColumnName="categoryId" />
           <ScalarProperty Name="productId" ColumnName="productId" />
           <ScalarProperty Name="userId" ColumnName="userId" />
           <ScalarProperty Name="productName" ColumnName="productName" />
@@ -13,6 +27,10 @@
           <ScalarProperty Name="price" ColumnName="price" />
           <ScalarProperty Name="createdDate" ColumnName="createdDate" />
           <ScalarProperty Name="updatedDate" ColumnName="updatedDate" />
+          <ScalarProperty Name="category1Id" ColumnName="category1Id" />
+          <ScalarProperty Name="isEnable" ColumnName="isEnable" />
+          <ScalarProperty Name="category2Id" ColumnName="category2Id" />
+          <ScalarProperty Name="dealerId" ColumnName="dealerId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -23,14 +41,6 @@
           <ScalarProperty Name="userName" ColumnName="userName" />
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="updatedDate" ColumnName="updatedDate" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Categories">
-      <EntityTypeMapping TypeName="PracticeDBModel.Category">
-        <MappingFragment StoreEntitySet="Categories">
-          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
-          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -13,7 +13,7 @@
     var productListUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "ProductList" });
     ////WebApi link for List
     var getAllProductUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "GetAllProduct" });
-    var getAllCategoryUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "GetAllCategory" });
+    var getProductDataExtraUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "GetProductDataExtra" });
     //Angular Function Name
     var saveProduct = "saveProduct";
 }
@@ -24,7 +24,7 @@
       '@deleteProductByIdUrl',
       '@getAllProductUrl',
      '@saveProductUrl',
-     '@getAllCategoryUrl',
+     '@getProductDataExtraUrl',
      '@productListUrl'
      )">
 
@@ -32,16 +32,17 @@
         <div class="panel-heading"><h2>{{msg}}</h2></div>
         <div class="panel-body">
             <div class="col-md-12">
-                <div class="form-group">
-                    <label class="control-label col-md-2">Status</label>
-                    <div class="col-md-10">
-                        <input type="radio" id="enable" ng-model="data.isEnable" ng-value="true">
-                        <label style="color:green" for="enable">Enable</label>
-                        <input type="radio" id="disable" ng-model="data.isEnable" ng-value="false">
-                        <label style="color:red" for="disable">Disable</label>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Status</label>
+                        <div class="col-md-10">
+                            <input type="radio" id="enable" ng-model="data.isEnable" ng-value="true">
+                            <label style="color:green" for="enable">Enable</label>
+                            <input type="radio" id="disable" ng-model="data.isEnable" ng-value="false">
+                            <label style="color:red" for="disable">Disable</label>
+                        </div>
                     </div>
-                </div>
-                @*<label>Click me: <input type="checkbox" ng-model="checked" ng-init="checked=true" /></label><br />
+                    @*<label>Click me: <input type="checkbox" ng-model="checked" ng-init="checked=true" /></label><br />
             Show when checked:
                 <span ng-hide="checked" class="animate-if">
                 This is for hide when checkbox is unchecked.
@@ -53,49 +54,92 @@
                 This is show when checkbox is unchecked.
             </span>*@
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.productName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.productName, new { htmlAttributes = new { @class = "form-control", ng_model = "data.productName" } })
-                        @Html.ValidationMessageFor(model => model.productName, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.productName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.productName, new { htmlAttributes = new { @class = "form-control", ng_model = "data.productName" } })
+                            @Html.ValidationMessageFor(model => model.productName, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.quantity, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.quantity, new { htmlAttributes = new { @class = "form-control", ng_model = "data.quantity" } })
-                        @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.quantity, new { htmlAttributes = new { @class = "form-control", ng_model = "data.quantity" } })
+                            @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control", ng_model = "data.price" } })
-                        @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control", ng_model = "data.price" } })
+                            @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-2">Category</label>
-                    <div class="col-md-10">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Category</label>
+                        <div class="col-md-10">
 
-                        @*<select class="form-control" ng-model="data.categoryId"
+                            @*<select class="form-control" ng-model="data.categoryId"
                         ng-options="option.CategoryName for option in categories">
                 </select>*@
 
-                        @*{{data.categoryId == x.CategoryId ? 'selected' : ''}}*@
+                            @*{{data.categoryId == x.CategoryId ? 'selected' : ''}}*@
 
-                        <select id="category" class="form-control" ng-model="data.categoryId">
-                            <option ng-repeat="x in categories"  ng-value="{{x.CategoryId}}">{{x.CategoryName}}</option>
-                        </select>
+                            <select class="form-control" ng-model="data.category1Id">
+                                <option ng-repeat="x in categories" ng-value="{{x.CategoryId}}">{{x.CategoryName}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" ng-click="@(saveProduct)()" value="{{show}}" class="btn btn-{{button}}" />
+                        </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">2nd Category</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">2nd Category</label>
+                                <div class="col-md-10">
 
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" ng-click="@(saveProduct)()" value="{{show}}" class="btn btn-{{button}}" />
+                                    @*<select class="form-control" ng-model="data.categoryId"
+                        ng-options="option.CategoryName for option in categories">
+                </select>*@
+
+                                    @*{{data.categoryId == x.CategoryId ? 'selected' : ''}}*@
+
+                                    <select id="category" class="form-control" ng-model="data.category2Id">
+                                        <option ng-repeat="x in categories" ng-value="{{x.CategoryId}}">{{x.CategoryName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Dealer</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Dealer</label>
+                                <div class="col-md-10">
+
+                                    @*<select class="form-control" ng-model="data.categoryId"
+                        ng-options="option.CategoryName for option in categories">
+                </select>*@
+
+                                    @*{{data.categoryId == x.CategoryId ? 'selected' : ''}}*@
+
+                                    <select class="form-control" ng-model="data.dealerId">
+                                        <option ng-repeat="x in dealers" ng-value="{{x.DealerId}}">{{x.DealerName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

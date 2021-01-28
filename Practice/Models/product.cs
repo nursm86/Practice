@@ -9,9 +9,11 @@
 
 namespace Practice.Models
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
-    
+    using System.Xml.Serialization;
+
     public partial class product
     {
         public int productId { get; set; }
@@ -21,10 +23,16 @@ namespace Practice.Models
         public double price { get; set; }
         public System.DateTime createdDate { get; set; }
         public System.DateTime updatedDate { get; set; }
-        public int categoryId { get; set; }
+        public int category1Id { get; set; }
         public bool isEnable { get; set; }
+        public int category2Id { get; set; }
+        public Nullable<int> dealerId { get; set; }
     
-        public virtual user user { get; set; }
         public virtual Category Category { get; set; }
+        [JsonIgnore,XmlIgnore]
+        public virtual Category Category1 { get; set; }
+        [JsonIgnore,XmlIgnore]
+        public virtual Dealer Dealer { get; set; }
+        public virtual user user { get; set; }
     }
 }

@@ -15,8 +15,8 @@ app.controller('productInfo', function ($scope, $http) {
             .then(function (response) {
                 if (response.status == 200) {
                     if (response.data) {
-                        var data = JSON.parse(response.data);
                         //console.log(data);
+                        var data = JSON.parse(response.data);
                         $scope.data = data;
                     }
                     else {
@@ -26,9 +26,9 @@ app.controller('productInfo', function ($scope, $http) {
             });
     }
 
-    $scope.getAllCategoryList = function () {
+    $scope.loadProductExtraData = function () {
         var req = {
-            url: $scope.getAllCategoryUrl,
+            url: $scope.getProductDataExtraUrl,
             method: "POST",
             header: "Content-Type:application/json",
         };
@@ -36,8 +36,9 @@ app.controller('productInfo', function ($scope, $http) {
             .then(function (response) {
                 if (response.status == 200) {
                     if (response.data) {
-                        var data = JSON.parse(response.data);
-                        $scope.categories = data;
+                        console.log(response);
+                        $scope.categories = JSON.parse(response.data[0].Value);
+                        $scope.dealers = JSON.parse(response.data[1].Value);
                     }
                     else {
                         alert("Something Went Wrong!!!");
@@ -55,13 +56,6 @@ app.controller('productInfo', function ($scope, $http) {
             header: "Content-Type:application/json",
             data: {
                 p : $scope.data
-                //productId: $scope.productId,
-                //userId: id,
-                //isEnable: $scope.data.isEnable,
-                //categoryId: $scope.data.categoryId,
-                //productName: $scope.data.productName,
-                //quantity: $scope.data.quantity,
-                //price: $scope.data.price
             }
         };
         $http(req)
@@ -87,7 +81,7 @@ app.controller('productInfo', function ($scope, $http) {
         , deleteProductByIdUrl
         , getAllProductUrl,
         saveProductUrl,
-        getAllCategoryUrl,
+        getProductDataExtraUrl,
         productListUrl
     ) {
         $scope.productId = productId;
@@ -97,8 +91,8 @@ app.controller('productInfo', function ($scope, $http) {
         /*bind extra url if need*/
         $scope.getAllProductUrl = getAllProductUrl;
         $scope.saveProductUrl = saveProductUrl;
-        $scope.getAllCategoryUrl = getAllCategoryUrl;
-        $scope.getAllCategoryList();
+        $scope.getProductDataExtraUrl = getProductDataExtraUrl;
+        $scope.loadProductExtraData();
         if ($scope.productId == 0) {
             $scope.show = "Create";
             $scope.button = "success";

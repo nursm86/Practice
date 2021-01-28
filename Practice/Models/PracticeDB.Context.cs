@@ -16,7 +16,7 @@ namespace Practice.Models
     public partial class PracticeDBEntities : DbContext
     {
         public PracticeDBEntities()
-            : base("name=PracticeDBEntities")
+            : base("name=PracticeDBEntities1")
         {
         }
     
@@ -25,8 +25,9 @@ namespace Practice.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Dealer> Dealers { get; set; }
         public virtual DbSet<product> products { get; set; }
         public virtual DbSet<user> users { get; set; }
-        public virtual DbSet<Category> Categories { get; set; }
     }
 }

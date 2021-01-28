@@ -35,17 +35,19 @@ namespace Practice.Controllers
         //******************************Web Api from here************************
 
         [HttpPost]
-        public JsonResult GetAllCategory()
+        public JsonResult GetProductDataExtra()
         {
-            return Json(JsonConvert.SerializeObject(proRepo.GetAllCategories()));
+            dynamic dataExtra = new System.Dynamic.ExpandoObject();
+            dataExtra.categories = JsonConvert.SerializeObject(proRepo.GetAllCategories());
+            dataExtra.dealers = JsonConvert.SerializeObject(proRepo.GetAllDealers());
+            return Json(dataExtra);
         }
 
         [HttpGet]
 
         public JsonResult GetAllProduct()
         {
-            string json = JsonConvert.SerializeObject(proRepo.GetAll());
-            return Json(json,JsonRequestBehavior.AllowGet);
+            return Json(JsonConvert.SerializeObject(proRepo.GetAll()), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
