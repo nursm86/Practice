@@ -8,7 +8,7 @@
 
     //WebApi link for single row
     var getProductByIdUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "ProductAddEdit" });
-    var deleteProductByIdUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "GetDeleteProductById", area = "Admin" });
+    var deleteProductByIdUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "GetDeleteProductById"});
 
     ////WebApi link for List
     var getAllProductUrl = Url.HttpRouteUrl("", new { controller = "Product", action = "GetAllProduct" });
@@ -28,7 +28,7 @@
       '@getAllProductUrl'
      )">
             <br />
-            <a href="@(getProductByIdUrl)&id=0" class="btn btn-success pull-right" ><i class="fa fa-pencil-square-o">Create New Product</i></a>
+            <a href="@(getProductByIdUrl)&id=0" class="btn btn-success pull-right" ><i class="fa fa-pencil-square-o">Add New User</i></a>
             <input placeholder="Search" ng-model="value" ng-keyup="@(search)()" />
             <br /><br />
             <div class="table-bordered">
@@ -52,10 +52,14 @@
                             <tbody id="products">
                                 <tr ng-repeat="x in products">
                                     <td>{{x.@ProductColumn.productId}}</td>
-                                    <td>{{x.@ProductColumn.productName}}</td>
+                                    <td>{{x.@ProductColumn.productName}}@*<input type="text" ng-model="x.@ProductColumn.productName" />*@</td>
                                     <td>{{x.@ProductColumn.quantity}}</td>
                                     <td>{{x.@ProductColumn.price}}</td>
-                                    <td>{{x.@ProductColumn.category}}</td>
+                                    <td>{{x.@ProductColumn.category}}
+                                        @*<select class="form-control" ng-model="x.category1Id">
+                                            <option ng-repeat="y in categories" ng-value="{{y.CategoryId}}">{{y.CategoryName}}</option>
+                                        </select>*@
+                                        </td>
                                     <td>{{x.@ProductColumn.userName}}</td>
                                     <td ng-bind="convertToDate(x.@ProductColumn.createdDate) | date:'dd/MM/yyyy'"></td>
                                     <td ng-bind="convertToDate(x.@ProductColumn.updatedDate) | date:'dd/MM/yyyy'"></td>

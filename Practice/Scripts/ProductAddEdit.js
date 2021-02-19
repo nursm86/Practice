@@ -36,7 +36,7 @@ app.controller('productInfo', function ($scope, $http) {
             .then(function (response) {
                 if (response.status == 200) {
                     if (response.data) {
-                        console.log(response);
+                        console.log(response.data.dealers);
                         $scope.categories = JSON.parse(response.data[0].Value);
                         $scope.dealers = JSON.parse(response.data[1].Value);
                     }
@@ -61,15 +61,11 @@ app.controller('productInfo', function ($scope, $http) {
         $http(req)
             .then(function (response) {
                 if (response.status == 200) {
-                    if (response.data) {
-                        //console.log(response.data);
-                        //var index = $scope.products.indexOf($scope.product);
-                        //$scope.products[index] = JSON.parse(response.data);
-                        //$("#editmodal").modal("hide");
+                    var data = JSON.parse(response.data);
+                    if (data.errors == "") {
                         window.location.href = window.location.href = $scope.productListUrl;
-                    }
-                    else {
-
+                    } else {
+                        $scope.errors = data.errors;
                     }
                 }
             });

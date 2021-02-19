@@ -31,28 +31,29 @@
     <div class="panel panel-{{button}}">
         <div class="panel-heading"><h2>{{msg}}</h2></div>
         <div class="panel-body">
+            <h4 class="text-warning" style="color: red">{{errors}}</h4>
             <div class="col-md-12">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label col-md-2">Status</label>
                         <div class="col-md-10">
                             <input type="radio" id="enable" ng-model="data.isEnable" ng-value="true">
-                            <label style="color:green" for="enable">Enable</label>
+                            <label style="color: green" for="enable">Enable</label>
                             <input type="radio" id="disable" ng-model="data.isEnable" ng-value="false">
-                            <label style="color:red" for="disable">Disable</label>
+                            <label style="color: red" for="disable">Disable</label>
                         </div>
                     </div>
                     @*<label>Click me: <input type="checkbox" ng-model="checked" ng-init="checked=true" /></label><br />
-            Show when checked:
-                <span ng-hide="checked" class="animate-if">
-                This is for hide when checkbox is unchecked.
-            </span><br />
-           <span ng-if="checked" class="animate-if">
-            This is for if when checkbox is unchecked.
-        </span><br />
-            <span ng-show="checked" class="animate-if">
-                This is show when checkbox is unchecked.
-            </span>*@
+                    Show when checked:
+                        <span ng-hide="checked" class="animate-if">
+                        This is for hide when checkbox is unchecked.
+                    </span><br />
+                   <span ng-if="checked" class="animate-if">
+                    This is for if when checkbox is unchecked.
+                </span><br />
+                    <span ng-show="checked" class="animate-if">
+                        This is show when checkbox is unchecked.
+                    </span>*@
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.productName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -83,8 +84,8 @@
                         <div class="col-md-10">
 
                             @*<select class="form-control" ng-model="data.categoryId"
-                        ng-options="option.CategoryName for option in categories">
-                </select>*@
+                                ng-options="option.CategoryName for option in categories">
+                        </select>*@
 
                             @*{{data.categoryId == x.CategoryId ? 'selected' : ''}}*@
 
@@ -109,8 +110,8 @@
                                 <div class="col-md-10">
 
                                     @*<select class="form-control" ng-model="data.categoryId"
-                        ng-options="option.CategoryName for option in categories">
-                </select>*@
+                                        ng-options="option.CategoryName for option in categories">
+                                </select>*@
 
                                     @*{{data.categoryId == x.CategoryId ? 'selected' : ''}}*@
 
@@ -129,8 +130,8 @@
                                 <div class="col-md-10">
 
                                     @*<select class="form-control" ng-model="data.categoryId"
-                        ng-options="option.CategoryName for option in categories">
-                </select>*@
+                                        ng-options="option.CategoryName for option in categories">
+                                </select>*@
 
                                     @*{{data.categoryId == x.CategoryId ? 'selected' : ''}}*@
 

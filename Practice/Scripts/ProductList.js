@@ -56,6 +56,29 @@ app.controller('productListCtrl', function ($scope, $http) {
             });
     }
 
+    $scope.loadProductExtraData = function () {
+        var req = {
+            url: $scope.getProductDataExtraUrl,
+            method: "POST",
+            header: "Content-Type:application/json",
+        };
+        $http(req)
+            .then(function (response) {
+                if (response.status == 200) {
+                    if (response.data) {
+                        console.log(response.data.dealers);
+                        $scope.categories = JSON.parse(response.data[0].Value);
+                        $scope.dealers = JSON.parse(response.data[1].Value);
+                    }
+                    else {
+                        alert("Something Went Wrong!!!");
+                    }
+                }
+            });
+    }
+
+    $scope.loadProductExtraData();
+
     $scope.deleteModal = function (product) {
         $("#deleteModal").modal("show");
         $scope.product = product;
