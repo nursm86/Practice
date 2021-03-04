@@ -1,0 +1,38 @@
+﻿@model ViewRendererSamples.Models.EmailConfirmationModel
+@{
+    ViewBag.Title = "ConfirmationEmail";
+}
+<html>
+    <head>        
+        <style>
+            body {
+                font-family: verdana, helvetica, arial, sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+    <h4>
+        Hi @Model.FirstName,
+    </h4>
+
+    <p>
+        Thank you for your order with @Model.StoreName on @DateTime.Now.ToString("MMM dd, yyyy"). We appreciate your business.
+    </p>
+
+    <p>
+        Your order for @Model.ItemDescription (@Model.ItemSku) for @Model.OrderTotal.ToString("c")
+        will be shipped shortly to you at this email address:   
+    </p>
+
+    <p style="font-weight: bold;margin: 10px;">
+        @Model.Email
+    </p>
+
+    <p>
+        Thank you again,
+    </p>
+    <p> 
+        The @Model.StoreName Team
+    </p>
+    </body>
+</html>

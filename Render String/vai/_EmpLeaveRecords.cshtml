@@ -1,0 +1,303 @@
+﻿@{
+    //WEB API's Url's
+    var getAllEmpLeaveAllocationByIdUrl = Url.HttpRouteUrl("", new {controller = "EmpLeaveAllocation", action = "GetAllEmpLeaveAllocationById"});
+    var getEmpLeaveRecordByIdUrl = Url.HttpRouteUrl("", new {controller = "EmpLeaveAllocation", action = "GetEmpLeaveAllocationById"});
+    var getDeleteEmpLeaveRecordByIdUrl = Url.HttpRouteUrl("", new {controller = "EmpLeaveAllocation", action = "GetDeleteEmpLeaveAllocationById"});
+    var saveEmpLeaveRecordUrl = Url.HttpRouteUrl("", new {controller = "EmpLeaveAllocation", action = "SaveEmpLeaveAllocation"});
+
+    //Employee Leave Application
+    var getAllEmpLeaveApplicationByIdUrl = Url.HttpRouteUrl("", new {controller = "EmpLeaveApplication", action = "GetAllLeaveApplicationById"});
+    var getLeaveApplicationByIdUrl = Url.HttpRouteUrl("", new {controller = "EmpLeaveApplication", action = "GetLeaveApplicationById" });
+    var getDeleteEmpLeaveAllocationByIdUrl = Url.HttpRouteUrl("", new {controller = "EmpLeaveApplication", action = "GetDeleteEmpLeaveApplicationById"});
+    var saveEmpLeaveAllocationUrl = Url.HttpRouteUrl("", new {controller = "EmpLeaveApplication", action = "SaveEmpLeaveApplication"});
+
+    //Angular Function
+    var loadTable = "loadSalaryRecords";
+    var loadData = "loadData";
+    var addNew = "addNew";
+    var updateTotal = "updateTotal";
+    var getLeaveRecord = "getLeaveRecord";
+    var saveLeaveAllocation = "saveLeaveAllocation";
+    var deleteLeaveAllocationById = "deleteLeaveAllocationById";
+    var deleteModal = "deleteModal";
+    var addNewLeaveRecord = "addNewLeaveRecord";
+    var loadApplications = "loadApplications";
+    var getLeaveApplication = "getLeaveApplicationById";
+    var deleteLeaveApplicationById = "deleteLeaveApplicationById";
+    var deleteModalForApplication = "deleteModalForApplication";
+    var saveLeaveApplication = "saveLeaveApplication";
+    var addNewLeaveApplication = "addNewLeaveApplication";
+}
+
+<div ng-controller="leaveRecordsCtrl" ng-init="Init(
+      '@getAllEmpLeaveAllocationByIdUrl',
+        '@getEmpLeaveRecordByIdUrl',
+        '@getDeleteEmpLeaveRecordByIdUrl',
+        '@saveEmpLeaveRecordUrl',
+        '@getAllEmpLeaveApplicationByIdUrl',
+        '@getLeaveApplicationByIdUrl',
+        '@getDeleteEmpLeaveAllocationByIdUrl',
+        '@saveEmpLeaveAllocationUrl'
+     )">
+    <h3 style="color: red">{{error}}</h3>
+    <div class="text-center" ng-hide="isDataAvailable">
+        <button ng-click="@(loadData)()" class="btn btn-info">
+            <i class="fa fa-refresh">Load Leave Records</i>
+        </button>
+    </div>
+    <div style="padding: 0" class="col-md-12" ng-show="isDataAvailable">
+        <div class="col-md-6" style="padding-left:0;padding-right: 0">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Leave Allocation
+                    <button style=" margin-top: -5px;" ng-click="@(loadTable)()" class="pull-right btn btn-sm btn-info">
+                        <i class="fa fa-refresh"> Reload </i>
+                    </button>
+                    <button style=" margin-top: -5px;margin-right: 2px" ng-click="@(addNewLeaveRecord)()" class="pull-right btn btn-sm btn-success">
+                        <i class="fa fa-plus"> Add New </i>
+                    </button>
+                </div>
+                <div class="panel-body" style="padding: 0">
+                    <div ng-hide="noDataAvailable" id="table" class="table-bordered">
+                        <div class="table-striped">
+                            <div class="table-responsive">
+                                <table style="margin-bottom: 0;" class="table table-bordered table-striped table-hover">
+                                    <tr>
+                                        <td><strong>From - Till</strong></td>
+                                        <td><strong>Vacation Days</strong></td>
+                                        <td><strong>Sick Days</strong></td>
+                                        <td><strong>Other Days</strong></td>
+                                        <td><strong>Total</strong></td>
+                                        @*<td><strong>Available Leave</strong></td>*@
+                                        <td><strong>Action</strong></td>
+                                    </tr>
+                                    <tbody>
+                                        <tr ng-repeat="x in LeaveRecords">
+                                            <td ng-click="@(loadApplications)(x)">{{x.EffectiveFrom | date :'mediumDate'}}  -to-  {{x.EffectiveTill | date :'mediumDate'}}</td>
+                                            <td ng-click="@(loadApplications)(x)">
+                                                {{x.VacationLeave}}
+                                            </td>
+                                            <td ng-click="@(loadApplications)(x)">
+                                                {{x.SickLeave}}
+                                            </td>
+                                            <td ng-click="@(loadApplications)(x)">
+                                                {{x.OtherLeave}}
+                                            </td>
+                                            <td ng-click="@(loadApplications)(x)">
+                                                {{x.TotalLeave}}
+                                            </td>
+                                            <td><button ng-click="@(getLeaveRecord)(x.EmpLeaveAllocationDetailId)" class="btn btn-xs btn-primary"><i class="fa fa-pencil-square-o"></i></button> <label ng-show="isOne"> | </label> <button ng-show="isOne" ng-click="@(deleteModal)(x.EmpLeaveAllocationDetailId)" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div ng-show="noDataAvailable" class="text-center text-danger">
+                        <h1>**No Previous Leave Records Available**</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="editModalForAllocation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">{{msg}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="center-block">
+                                <div class="form-group">
+                                    <label>Effective From</label>
+                                    <input type="text" class="form-control" ng-model="data.EffectiveFrom" placeholder="Please Use YYYY-MM-DD Format">
+                                </div>
+                                <div class="form-group">
+                                    <label>Effective Till</label>
+                                    <input type="text" class="form-control" ng-model="data.EffectiveTill" placeholder="Please Use YYYY-MM-DD Format">
+                                </div>
+                                <div class="form-group">
+                                    <label>Vacation Leave</label>
+                                    <input type="number" class="form-control" ng-keyup="@(updateTotal)()" ng-model="data.VacationLeave" placeholder="0">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sick Leave</label>
+                                    <input type="number" class="form-control" ng-keyup="@(updateTotal)()" ng-model="data.SickLeave" placeholder="0">
+                                </div>
+                                <div class="form-group">
+                                    <label>Other Leave</label>
+                                    <input type="number" class="form-control" ng-keyup="@(updateTotal)()" ng-model="data.OtherLeave" placeholder="0">
+                                </div>
+                                <div class="form-group">
+                                    <label>Total Leave</label>
+                                    <input type="number" class="form-control" ng-model="data.TotalLeave" readonly placeholder="0">
+                                </div>
+                                <div class="form-group">
+                                    <label>Remarks</label>
+                                    <textarea class="form-control" ng-model="data.Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button ng-click="@(saveLeaveAllocation)()" class="btn btn-{{button}}">{{show}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="deleteModalForAllocation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this Leave Allocation?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button ng-click="@(deleteLeaveAllocationById)()" class="btn btn-danger">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6" style="padding-right: 0">
+            <div class="table-responsive">
+                <div class="center-block">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Leave Application <label ng-hide="noButton">of : ({{selected.EffectiveFrom | date :'mediumDate'}}  -to-  {{selected.EffectiveTill | date :'mediumDate'}})</label> 
+                            <button ng-hide="noButton" style="margin-top: -5px" ng-click="@(addNewLeaveApplication)()" class="pull-right btn btn-sm btn-success">
+                                <i class="fa fa-plus"> Add New </i>
+                            </button>
+                        </div>
+                        <div class="panel-body" style="padding: 0">
+
+                            <div ng-hide="noDataAvailable2" id="table" class="table-bordered">
+                                <div class="table-striped">
+                                    <div class="table-responsive">
+                                        <table style="margin-bottom: 0;" class="table table-bordered table-striped table-hover">
+                                            <tr>
+                                                <td><strong>#</strong></td>
+                                                <td><strong>Form - Till</strong></td>
+                                                <td><strong>Type</strong></td>
+                                                <td><strong>Duration</strong></td>
+                                                <td><strong>Action Taken</strong></td>
+                                                <td><strong>Action</strong></td>
+                                            </tr>
+                                            <tbody id="employees">
+                                                <tr ng-click="" ng-repeat="x in LeaveApplications">
+                                                    <td ng-click="@(getLeaveApplication)(x.EmpLeaveApplicationDetailId)">{{$index + 1}}</td>
+                                                    <td ng-click="@(getLeaveApplication)(x.EmpLeaveApplicationDetailId)">
+                                                        {{x.LeaveFrom | date :'mediumDate'}}  -to-  {{x.LeaveTill | date :'mediumDate'}}
+                                                    </td>
+                                                    <td ng-click="@(getLeaveApplication)(x.EmpLeaveApplicationDetailId)">
+                                                        <label ng-if="x.LeaveType == 1">Sick Leave</label>
+                                                        <label ng-if="x.LeaveType == 0">Vacation Leave</label>
+                                                        <label ng-if="x.LeaveType == 2">Other Leave</label>
+                                                    </td>
+                                                    <td ng-click="@(getLeaveApplication)(x.EmpLeaveApplicationDetailId)">{{x.LeaveHour}} Hours</td>
+                                                    <td ng-click="@(getLeaveApplication)(x.EmpLeaveApplicationDetailId)">
+                                                        <label ng-if="x.ActionTaken == 0">Pending</label>
+                                                        <label ng-if="x.ActionTaken == 1">Approved</label>
+                                                        <label ng-if="x.ActionTaken == 2">Declined</label>
+                                                    </td>
+                                                    <td><button ng-click="@(getLeaveApplication)(x.EmpLeaveApplicationDetailId)" class="btn btn-xs btn-primary"><i class="fa fa-pencil-square-o"></i></button>  | <button ng-click="@(deleteModalForApplication)(x.EmpLeaveApplicationDetailId)" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div ng-show="noDataAvailable2" class="text-center text-danger">
+                                <h1>**No Previous Salary Records Available**</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal fade" id="editModalForApplication" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">{{show}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="center-block">
+                                <div class="form-group">
+                                    <label>Leave Type</label>
+                                    <select class="form-control" ng-model="data.LeaveType">
+                                        <option value="0">Vacation</option>
+                                        <option value="1">Sick</option>
+                                        <option value="2">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Leave From</label>
+                                    <input type="text" class="form-control" ng-model="data.LeaveFrom" placeholder="Please Use YYYY-MM-DD Format">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Leave Till</label>
+                                    <input type="text" class="form-control" ng-model="data.LeaveTill" placeholder="Please Use YYYY-MM-DD Format">
+                                </div>
+                                <div class="form-group">
+                                    <label>Leave Hour</label>
+                                    <input type="text" class="form-control" ng-model="data.LeaveHour" placeholder="Please Use YYYY-MM-DD Format">
+                                </div>
+                                <div class="form-group">
+                                    <label>Leave Reason</label>
+                                    <textarea class="form-control" ng-model="data.LeaveReason"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Leave Type</label>
+                                    <select class="form-control" ng-model="data.ActionTaken">
+                                        <option value="0">Pending</option>
+                                        <option value="1">Approve</option>
+                                        <option value="2">Decline</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Remarks</label>
+                                    <textarea class="form-control" ng-model="data.Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button ng-click="@(saveLeaveApplication)()" class="btn btn-{{button}}">{{show}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="deleteModalForApplication" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this Leave Application?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button ng-click="@(deleteLeaveApplicationById)()" class="btn btn-danger">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

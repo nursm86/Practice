@@ -1,0 +1,54 @@
+﻿@model Westwind.Web.ErrorViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Css/Reset.css" rel="stylesheet" />
+    <link href="~/Css/Standard.css" rel="stylesheet" />
+    <title>Error: @Model.WebErrorHandler.ErrorMessage</title>
+</head>
+    <body>        
+        <h1>Oops... an error occurred in the Application</h1>
+        <div class="descriptionheader">
+            This error page was rendered from a Razor view fired
+            from an HTTP Module hooked to the Application's Error event.
+            Demonstrates how you can use an Razor view outside the scope
+            of an ASP.NET MVC request.
+        </div>
+           
+        <img src="~/Images/warning128.png" style="float:left;margin:15px;" />
+
+        <div class="contentcontainer" style="margin-left: 150px">
+            <p>
+                An unexpected error has occurred in the application and we were forced to display this 
+                sad error page. The error has been noted and logged and someone will take a look at
+                it shortly. 
+            </p>
+                
+            <p>
+                Please go back to the Home page to continue<br/>
+                <ul>
+                    <li><b><a href="~/">Go to Home Page</a></b></li>
+                    @if (Request.UrlReferrer!=null)
+                    {
+                        <li><b><a href="@Request.UrlReferrer">Go to the last previous page</a></b></li>
+                    }
+                </ul>
+            </p>
+                
+            @if (Model.ErrorHandlingMode == Westwind.Web.ErrorHandlingModes.DeveloperErrorMessage)
+            {
+                <hr/>
+                    
+                <h3>@Model.Title</h3>
+
+                <h4>Detailed error info:</h4>
+                <pre class="code">@Model.WebErrorHandler.ToString()</pre>    
+            }                
+        </div>        
+        
+    </body>
+</html>

@@ -1,0 +1,34 @@
+﻿@using Westwind.Utilities
+@model ViewRendererSamples.Controllers.Customer
+@{
+    ViewBag.Title = Model.Name + " - Customer Info";
+}
+@section headers
+{
+    <style>
+        label {display: block;margin-top: 10px; }
+    </style>    
+}
+<h1>CustomerApi</h1>
+<div class="descriptionheader">
+    This example demonstrates that you can also render
+    MVC Razor generated HTML directly from a Web Api request.
+    While this example uses a static
+    view it's quite feasible to create a view mapping 
+    scheme to render views that match API requests or
+    to use a generic view that can render API data
+    in HTML format (ie. a object -> displayable HTML)
+</div>
+
+<div class="contentcontainer">
+    <p>
+        @DateTime.Now.ToString("d")
+    </p>
+    <p>Welcome back <b>@Model.Name</b>,</p>
+
+    <label>You live at:</label>
+    @Html.Raw(HtmlUtils.DisplayMemo(Model.Address))
+
+    <label>Your email is:</label>
+    @Model.Email
+</div>

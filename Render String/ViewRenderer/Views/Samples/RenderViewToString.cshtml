@@ -1,0 +1,27 @@
+﻿@{    
+    ViewBag.Title = "Rendering a View To String";
+}
+<h1>Render a view to String</h1>
+
+<div class="toolbarcontainer">
+    <a href="~/default.htm" class="hoverbutton">
+        <img src="~/css/images/home.png" />
+        Home</a>
+    <a href="RenderViewToString" class="hoverbutton">
+        <img src="~/css/images/refresh.png" />
+        Refresh</a>
+</div>
+
+<div class="descriptionheader">
+    This example renders text for an email message as HTML using RenderViewToString().
+    This sample displays the output - in a real app you'd email this result text.   
+</div>
+
+
+
+
+<div class='containercontent'>
+    <h3>Rendered Email Template Content</h3>  
+    The following text is the code rendered from the Razor template.  
+    <pre class="code">@ViewBag.RenderedHtml</pre>
+</div>
